@@ -30,12 +30,15 @@ import androidx.compose.material.icons.filled.NavigateNext
 import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.MonitorWeight
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.RunCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -53,6 +56,7 @@ import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -77,11 +81,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.testing.TestNavHostController
 import com.example.fitnessapp.Navigation.Routes
+import com.example.fitnessapp.ViewModel.UserInfoViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -90,8 +97,8 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GetGenderInfo(navController: NavController) {
-    var userGender by remember{ mutableStateOf<String?>(null)}
+fun GetGenderInfo(navController: NavController, viewModel: UserInfoViewModel= androidx.lifecycle.viewmodel.compose.viewModel()) {
+    val userGender by viewModel.userGender.collectAsState()
 
     Scaffold(topBar = {
         TopAppBar(
@@ -144,7 +151,7 @@ fun GetGenderInfo(navController: NavController) {
                     // Cards
                     Spacer(modifier = Modifier.height(16.dp))
                     ElevatedCard(
-                        onClick = { userGender="Male"
+                        onClick = { viewModel.selectGender("Male")
                                   navController.navigate(Routes.get_goal_info)
                                   Log.d("CardClick", userGender!!)},
                         enabled = userGender==null,
@@ -172,7 +179,7 @@ fun GetGenderInfo(navController: NavController) {
 
                     Spacer(modifier = Modifier.height(16.dp))
                     ElevatedCard(
-                        onClick = { userGender="Female"
+                        onClick = { viewModel.selectGender("Female")
                                   navController.navigate(Routes.get_goal_info)
                                   Log.d("CardClick", userGender!!)},
                         enabled = userGender==null,
@@ -206,8 +213,8 @@ fun GetGenderInfo(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GetBodyTypeInfo(navController: NavController){
-    var userBodyType by remember{mutableStateOf<String?>(null)}
+fun GetBodyTypeInfo(navController: NavController, viewModel: UserInfoViewModel= androidx.lifecycle.viewmodel.compose.viewModel()){
+    val userBodyType by viewModel.userBodyType.collectAsState()
     Scaffold(topBar = {
         TopAppBar(title = { },
             navigationIcon = {
@@ -241,7 +248,7 @@ fun GetBodyTypeInfo(navController: NavController){
                     )
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    ElevatedCard(onClick = { userBodyType="Ectomorph"
+                    ElevatedCard(onClick = { viewModel.selectBodyType("Ectomorph")
                                             navController.navigate(Routes.get_final_details)},
                         enabled = userBodyType==null,
                         modifier = Modifier
@@ -265,7 +272,7 @@ fun GetBodyTypeInfo(navController: NavController){
 
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    ElevatedCard(onClick = { userBodyType="Mesomorph"
+                    ElevatedCard(onClick = { viewModel.selectBodyType("Mesomorph")
                                            navController.navigate(Routes.get_final_details)},
                         enabled = userBodyType==null,
                         modifier = Modifier
@@ -288,7 +295,7 @@ fun GetBodyTypeInfo(navController: NavController){
                         }
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    ElevatedCard(onClick = { userBodyType="Endomorph"
+                    ElevatedCard(onClick = { viewModel.selectBodyType("Endomorph")
                                             navController.navigate(Routes.get_final_details)},
                         enabled = userBodyType==null,
                         modifier = Modifier
@@ -320,8 +327,8 @@ fun GetBodyTypeInfo(navController: NavController){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GetGoalInfo(navController: NavController){
-    var userGoal by remember { mutableStateOf<String?>(null) }
+fun GetGoalInfo(navController: NavController, viewModel: UserInfoViewModel= androidx.lifecycle.viewmodel.compose.viewModel()){
+    val userGoal by viewModel.userGoal.collectAsState()
     Scaffold(topBar = {
         TopAppBar(title = { },
             navigationIcon = {
@@ -357,7 +364,7 @@ fun GetGoalInfo(navController: NavController){
                     Spacer(modifier = Modifier.height(16.dp))
 
                     ElevatedCard(onClick = { navController.navigate(Routes.get_body_type_info)
-                                           userGoal="Bulk"},
+                                           viewModel.selectGoal("Bulk")},
                         enabled = userGoal==null,
                         modifier = Modifier
                             .height(150.dp)
@@ -380,7 +387,7 @@ fun GetGoalInfo(navController: NavController){
                         
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    ElevatedCard(onClick = { userGoal="Cut"
+                    ElevatedCard(onClick = { viewModel.selectGoal("Cut")
                                            navController.navigate(Routes.get_body_type_info)
                                            },
                         enabled = userGoal==null,
@@ -404,7 +411,7 @@ fun GetGoalInfo(navController: NavController){
                         }
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    ElevatedCard(onClick = { userGoal="Maintain"
+                    ElevatedCard(onClick = { viewModel.selectGoal("Maintain")
                                            navController.navigate(Routes.get_body_type_info)},
                         enabled = userGoal==null,
                         modifier = Modifier
@@ -434,15 +441,17 @@ fun GetGoalInfo(navController: NavController){
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GetFinalDetails(navController: NavController){
-    var userName by remember { mutableStateOf("") }
-    var userDateOfBirth by remember { mutableStateOf("") }
+fun GetFinalDetails(navController: NavController, viewModel: UserInfoViewModel= androidx.lifecycle.viewmodel.compose.viewModel()){
+    val userName by viewModel.userName.collectAsState()
+    val userDateOfBirth by viewModel.userDateOfBirth.collectAsState()
     var userAge by remember { mutableStateOf<Int>(0) }
     var userAgeString by remember{ mutableStateOf("") }
     var showDatePicker by remember { mutableStateOf(false) }
     val dateState = rememberDatePickerState()
-    var userBodyweight by remember { mutableStateOf("") }
+    val userBodyweight by viewModel.userBodyWeight.collectAsState()
     var isError by remember{ mutableStateOf(false) }
+    val userActvityrate by viewModel.userActivityRate.collectAsState()
+    var expanded by remember { mutableStateOf(false) }
 
     fun formatDate(dateinmillis:Long): String {
         val sdf =SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -469,7 +478,7 @@ fun GetFinalDetails(navController: NavController){
                 tint=MaterialTheme.colorScheme.onBackground)
         }})},
         floatingActionButton = { FloatingActionButton(onClick = {
-            if(userBodyweight.isEmpty()||userName.isEmpty()){
+            if(userBodyweight.isNullOrEmpty()||viewModel.userName.value.isNullOrEmpty()){
                 isError=true
             }
             else{
@@ -500,8 +509,9 @@ fun GetFinalDetails(navController: NavController){
                     )
                     Spacer(modifier = Modifier.height(32.dp))
 
-                    OutlinedTextField(value = userName, onValueChange = {
-                        userName=it},
+                    OutlinedTextField(value = userName?:"", onValueChange = {
+                        newValue->viewModel.enterUserName(newValue)
+                        isError=newValue.isEmpty()                                                    },
                         placeholder = { Text(text = "Name")},
                         leadingIcon = { Icon(imageVector = Icons.Outlined.Person, contentDescription = "")},
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -509,13 +519,14 @@ fun GetFinalDetails(navController: NavController){
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(10.dp)
-                        , isError = isError&&userName.isEmpty(),
+                        , isError = isError,
                         supportingText = { Text(text = "*required")})
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    OutlinedTextField(value = userBodyweight, onValueChange = {
-                        userBodyweight=it},
+                    OutlinedTextField(value = userBodyweight?:"", onValueChange = {
+                        newValue->viewModel.enterBodyWeight(newValue)
+                        isError=newValue.isEmpty() },
                         placeholder = { Text(text = "Weight")},
                         leadingIcon = { Icon(imageVector = Icons.Outlined.MonitorWeight, contentDescription = "")},
                         modifier = Modifier
@@ -523,20 +534,21 @@ fun GetFinalDetails(navController: NavController){
                             .padding(10.dp),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Next),
                         keyboardActions = KeyboardActions(onNext = {}),
-                        isError = isError&&userBodyweight.isEmpty(),
+                        isError = isError,
                         supportingText = { Text(text = "*required")}
                         )
                     Spacer(modifier = Modifier.height(16.dp))
 
 
                     OutlinedTextField(
-                        value = userDateOfBirth,
-                        onValueChange = { userDateOfBirth = it },
+                        value = userDateOfBirth?:"",
+                        onValueChange = { newValue-> viewModel.enterDob(newValue)
+                                        isError=newValue.isEmpty()},
                         placeholder = { Text(text = "Date Of Birth") },
                         leadingIcon = {
-                            Icon(imageVector = Icons.Outlined.MonitorWeight, contentDescription = null)
+                            Icon(imageVector = Icons.Outlined.CalendarToday, contentDescription = null)
                         },
-                        readOnly = true, // Prevents keyboard from opening
+                        readOnly = true,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(10.dp)
@@ -551,7 +563,7 @@ fun GetFinalDetails(navController: NavController){
                                 }
                             }
                             , supportingText = { Text(text = "Your Age: ${userAge}")},
-                            isError = isError&&userDateOfBirth.isEmpty()
+                            isError = isError
                     )
 
                     if (showDatePicker) {
@@ -561,10 +573,10 @@ fun GetFinalDetails(navController: NavController){
                                 TextButton(onClick = { showDatePicker = false
                                 val selectedDateMillis=dateState.selectedDateMillis
                                 if(selectedDateMillis!=null){
-                                    userDateOfBirth=formatDate(selectedDateMillis)
+                                    viewModel.enterDob(formatDate(selectedDateMillis))
                                     userAge=calculateAge(selectedDateMillis)
                                     userAgeString="Age: ${userAge} years"
-                                    isError=userDateOfBirth.isEmpty()||userAge==0
+                                    isError=viewModel.userDateOfBirth.value.isNullOrEmpty()||userAge==0
                                 }
                                 }) {
                                     Text(text = "Ok")
@@ -574,7 +586,41 @@ fun GetFinalDetails(navController: NavController){
                             DatePicker(state = dateState)
                         }
                     }
+                    OutlinedTextField(
+                        value = userActvityrate?:"",
+                        onValueChange = { newValue->  viewModel.enterActivityRate(newValue)
+                                        isError=newValue.isEmpty()},
+                        placeholder = { Text(text = "How often do you perform physical activity?") },
+                        leadingIcon = {
+                            Icon(imageVector = Icons.Outlined.RunCircle, contentDescription = null)
+                        },
+                        readOnly = true, // Prevents keyboard from opening
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp)
+                            .pointerInput(Unit) {
+                                awaitEachGesture {
+                                    awaitFirstDown(pass = PointerEventPass.Initial)
+                                    val upEvent =
+                                        waitForUpOrCancellation(pass = PointerEventPass.Initial)
+                                    if (upEvent != null) {
+                                        expanded = true
+                                    }
+                                }
+                            }
+                        ,
+                        supportingText = { Text(text = "*required")},
+                        isError = isError
+                    )
 
+                    DropdownMenu(expanded = expanded, onDismissRequest = { expanded=false }, offset = DpOffset(x=230.dp,y=0.dp)) {
+                        DropdownMenuItem(text = { Text(text = "Very Often") }, onClick = { expanded=false 
+                                                                                            viewModel.enterActivityRate("Very Often") })
+                        DropdownMenuItem(text = { Text(text = "Sometimes") }, onClick = { viewModel.enterActivityRate("Sometimes")
+                                                                                            expanded=false})
+                        DropdownMenuItem(text = { Text(text = "Never") }, onClick = { viewModel.enterActivityRate("Never")
+                                                                                            expanded=false})
+                    }
 
                 }
 
