@@ -7,4 +7,5 @@ object Routes {
     var get_goal_info="Get Goal Info"
     var get_body_type_info="Get Body Type Info"
     var get_final_details="Get Final details"
+    var get_response="Get Response"
 }

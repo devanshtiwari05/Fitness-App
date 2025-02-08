@@ -9,6 +9,7 @@ import com.example.fitnessapp.GetFinalDetails
 import com.example.fitnessapp.GetGenderInfo
 import com.example.fitnessapp.GetGoalInfo
 import com.example.fitnessapp.Home_Screen
+import com.example.fitnessapp.Response.GetResponse
 import com.example.fitnessapp.SplashScreen
 
 @Composable
@@ -32,6 +33,9 @@ fun MyAppNavigation(){
         }
         composable(Routes.get_final_details) {
             GetFinalDetails(navController)
+        }
+        composable(Routes.get_response) {
+            GetResponse(navController)
         }
     })
 }

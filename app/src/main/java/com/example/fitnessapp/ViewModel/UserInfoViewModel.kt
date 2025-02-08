@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.util.Calendar
 
 class UserInfoViewModel : ViewModel(){
     private val _userGender=MutableStateFlow<String?>(null)
@@ -13,7 +14,7 @@ class UserInfoViewModel : ViewModel(){
     private val _userGoal= MutableStateFlow<String?>(null)
     val userGoal: StateFlow<String?> = _userGoal.asStateFlow()
     private val _userName = MutableStateFlow<String?>(null)
-    val userName: StateFlow<String?> = _userGoal.asStateFlow()
+    val userName: StateFlow<String?> = _userName.asStateFlow()
     private val _userDateOfBirth= MutableStateFlow<String?>(null)
     val userDateOfBirth: StateFlow<String?> = _userDateOfBirth.asStateFlow()
     private val _userActivityRate= MutableStateFlow<String?>(null)
@@ -38,10 +39,22 @@ class UserInfoViewModel : ViewModel(){
         _userDateOfBirth.value=dob
     }
     fun enterActivityRate(activityRate:String){
-        _userDateOfBirth.value=activityRate
+        _userActivityRate.value=activityRate
     }
     fun enterBodyWeight(bodyWeight:String){
         _userBodyWeight.value=bodyWeight
+    }
+    fun calculateAndSetAge(dobMillis: Long) {
+        val dob = Calendar.getInstance().apply { timeInMillis = dobMillis }
+        val today = Calendar.getInstance()
+
+        var age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR)
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+            age--
+        }
+
+        _userAge.value = age
     }
 
 

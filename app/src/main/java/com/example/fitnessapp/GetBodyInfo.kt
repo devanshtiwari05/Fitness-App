@@ -2,6 +2,7 @@ package com.example.fitnessapp
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -25,6 +26,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.MonitorWeight
 import androidx.compose.material.icons.filled.NavigateNext
 import androidx.compose.material.icons.outlined.CalendarToday
@@ -106,7 +108,7 @@ fun GetGenderInfo(navController: NavController, viewModel: UserInfoViewModel= an
             navigationIcon = {
                 IconButton(onClick = { navController.popBackStack() }) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Previous Screen",
                         tint = MaterialTheme.colorScheme.onBackground
                     )
@@ -153,14 +155,19 @@ fun GetGenderInfo(navController: NavController, viewModel: UserInfoViewModel= an
                     ElevatedCard(
                         onClick = { viewModel.selectGender("Male")
                                   navController.navigate(Routes.get_goal_info)
-                                  Log.d("CardClick", userGender!!)},
-                        enabled = userGender==null,
+                                  Log.d("CardClick", userGender?:"No user selected")},
+
                         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiary),
                         modifier = Modifier
                             .height(150.dp)
                             .fillMaxWidth()
                             .padding(16.dp)
+                            .border(
+                                width = if (userGender == "Male") 4.dp else 0.dp,
+                                color = if (userGender == "Male") Color.Blue else Color.Transparent,
+                                shape = MaterialTheme.shapes.medium
+                            )
                     ) {
                         Row(modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -174,6 +181,8 @@ fun GetGenderInfo(navController: NavController, viewModel: UserInfoViewModel= an
                             Image(painter = painterResource(id = R.drawable.male),
                                 contentDescription ="Male"
                             )
+
+
                         }
                     }
 
@@ -181,14 +190,18 @@ fun GetGenderInfo(navController: NavController, viewModel: UserInfoViewModel= an
                     ElevatedCard(
                         onClick = { viewModel.selectGender("Female")
                                   navController.navigate(Routes.get_goal_info)
-                                  Log.d("CardClick", userGender!!)},
-                        enabled = userGender==null,
+                                  Log.d("CardClick", userGender?:"No user selected")},
                         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiary),
                         modifier = Modifier
                             .height(150.dp)
                             .fillMaxWidth()
                             .padding(16.dp)
+                            .border(
+                                width = if (userGender == "Female") 4.dp else 0.dp,
+                                color = if (userGender == "Female") Color.Magenta else Color.Transparent,
+                                shape = MaterialTheme.shapes.medium
+                            )
                     ) {
 
                             Row(modifier = Modifier.fillMaxWidth(),
@@ -203,6 +216,7 @@ fun GetGenderInfo(navController: NavController, viewModel: UserInfoViewModel= an
                                 Image(painter = painterResource(id = R.drawable.female),
                                     contentDescription ="Female"
                                     )
+
                         }
                     }
                 }
@@ -250,11 +264,16 @@ fun GetBodyTypeInfo(navController: NavController, viewModel: UserInfoViewModel= 
 
                     ElevatedCard(onClick = { viewModel.selectBodyType("Ectomorph")
                                             navController.navigate(Routes.get_final_details)},
-                        enabled = userBodyType==null,
+
                         modifier = Modifier
                             .height(150.dp)
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(16.dp)
+                            .border(
+                                width = if (userBodyType == "Ectomorph") 4.dp else 0.dp,
+                                color = if (userBodyType == "Ectomorph") Color.Red else Color.Transparent,
+                                shape = MaterialTheme.shapes.medium
+                            ),
                         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary)) {
                         Row(modifier=Modifier.fillMaxWidth(),
@@ -274,11 +293,16 @@ fun GetBodyTypeInfo(navController: NavController, viewModel: UserInfoViewModel= 
                     Spacer(modifier = Modifier.height(16.dp))
                     ElevatedCard(onClick = { viewModel.selectBodyType("Mesomorph")
                                            navController.navigate(Routes.get_final_details)},
-                        enabled = userBodyType==null,
+
                         modifier = Modifier
                             .height(150.dp)
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(16.dp)
+                            .border(
+                                width = if (userBodyType == "Mesomorph") 4.dp else 0.dp,
+                                color = if (userBodyType == "Mesomorph") Color.Red else Color.Transparent,
+                                shape = MaterialTheme.shapes.medium
+                            ),
                         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary)) {
                         Row(modifier=Modifier.fillMaxWidth(),
@@ -297,11 +321,16 @@ fun GetBodyTypeInfo(navController: NavController, viewModel: UserInfoViewModel= 
                     Spacer(modifier = Modifier.height(16.dp))
                     ElevatedCard(onClick = { viewModel.selectBodyType("Endomorph")
                                             navController.navigate(Routes.get_final_details)},
-                        enabled = userBodyType==null,
+
                         modifier = Modifier
                             .height(150.dp)
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(16.dp)
+                            .border(
+                                width = if (userBodyType == "Endomorph") 4.dp else 0.dp,
+                                color = if (userBodyType == "Endomorph") Color.Red else Color.Transparent,
+                                shape = MaterialTheme.shapes.medium
+                            ),
                         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary)) {
                         Row(modifier = Modifier.fillMaxWidth(),
@@ -365,11 +394,15 @@ fun GetGoalInfo(navController: NavController, viewModel: UserInfoViewModel= andr
 
                     ElevatedCard(onClick = { navController.navigate(Routes.get_body_type_info)
                                            viewModel.selectGoal("Bulk")},
-                        enabled = userGoal==null,
                         modifier = Modifier
                             .height(150.dp)
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(16.dp)
+                            .border(
+                                width = if (userGoal == "Bulk") 4.dp else 0.dp,
+                                color = if (userGoal == "Bulk") Color.Red else Color.Transparent,
+                                shape = MaterialTheme.shapes.medium
+                            ),
                         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary)) {
                         Row(modifier=Modifier.fillMaxWidth(),
@@ -390,11 +423,16 @@ fun GetGoalInfo(navController: NavController, viewModel: UserInfoViewModel= andr
                     ElevatedCard(onClick = { viewModel.selectGoal("Cut")
                                            navController.navigate(Routes.get_body_type_info)
                                            },
-                        enabled = userGoal==null,
                         modifier = Modifier
                             .height(150.dp)
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(16.dp)
+                            .border(
+                                width = if (userGoal == "Cut") 4.dp else 0.dp,
+                                color = if (userGoal == "Cut") Color.Red else Color.Transparent,
+                                shape = MaterialTheme.shapes.medium
+                            )
+                        ,
                         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary)) {
                         Row(modifier=Modifier.fillMaxWidth(),
@@ -413,11 +451,15 @@ fun GetGoalInfo(navController: NavController, viewModel: UserInfoViewModel= andr
                     Spacer(modifier = Modifier.height(16.dp))
                     ElevatedCard(onClick = { viewModel.selectGoal("Maintain")
                                            navController.navigate(Routes.get_body_type_info)},
-                        enabled = userGoal==null,
                         modifier = Modifier
                             .height(150.dp)
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(16.dp)
+                            .border(
+                                width = if (userGoal == "Maintain") 4.dp else 0.dp,
+                                color = if (userGoal == "Maintain") Color.Red else Color.Transparent,
+                                shape = MaterialTheme.shapes.medium
+                            ),
                         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary)) {
                         Row(modifier = Modifier.fillMaxWidth(),
@@ -444,8 +486,7 @@ fun GetGoalInfo(navController: NavController, viewModel: UserInfoViewModel= andr
 fun GetFinalDetails(navController: NavController, viewModel: UserInfoViewModel= androidx.lifecycle.viewmodel.compose.viewModel()){
     val userName by viewModel.userName.collectAsState()
     val userDateOfBirth by viewModel.userDateOfBirth.collectAsState()
-    var userAge by remember { mutableStateOf<Int>(0) }
-    var userAgeString by remember{ mutableStateOf("") }
+    val userAge by viewModel.userAge.collectAsState()
     var showDatePicker by remember { mutableStateOf(false) }
     val dateState = rememberDatePickerState()
     val userBodyweight by viewModel.userBodyWeight.collectAsState()
@@ -458,18 +499,7 @@ fun GetFinalDetails(navController: NavController, viewModel: UserInfoViewModel= 
         return sdf.format(Date(dateinmillis))
     }
 
-    fun calculateAge(dobmillis:Long): Int {
-        val dob=Calendar.getInstance().apply { timeInMillis=dobmillis }
-        val today = Calendar.getInstance()
 
-        var age=today.get(Calendar.YEAR)-dob.get(Calendar.YEAR)
-
-        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
-            age--
-        }
-
-        return if(age<0)0 else age
-    }
 
     Scaffold(topBar = { TopAppBar(title = { /*TODO*/ },
         navigationIcon = { IconButton(onClick = { navController.popBackStack() }) {
@@ -482,7 +512,7 @@ fun GetFinalDetails(navController: NavController, viewModel: UserInfoViewModel= 
                 isError=true
             }
             else{
-
+                navController.navigate(Routes.get_response)
             }
         }) {
                 Icon(imageVector = Icons.AutoMirrored.Filled.NavigateNext, contentDescription = "Next Screen")
@@ -509,23 +539,24 @@ fun GetFinalDetails(navController: NavController, viewModel: UserInfoViewModel= 
                     )
                     Spacer(modifier = Modifier.height(32.dp))
 
-                    OutlinedTextField(value = userName?:"", onValueChange = {
-                        newValue->viewModel.enterUserName(newValue)
-                        isError=newValue.isEmpty()                                                    },
-                        placeholder = { Text(text = "Name")},
-                        leadingIcon = { Icon(imageVector = Icons.Outlined.Person, contentDescription = "")},
+                    OutlinedTextField(
+                        value = userName?:"",  // ✅ Uses collected state
+                        onValueChange = { newValue ->
+                            viewModel.enterUserName(newValue)  // ✅ Updates ViewModel correctly
+                        },
+                        placeholder = { Text(text = "Name") },
+                        leadingIcon = { Icon(imageVector = Icons.Outlined.Person, contentDescription = "") },
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                        keyboardActions = KeyboardActions(onNext = {}),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(10.dp)
-                        , isError = isError,
-                        supportingText = { Text(text = "*required")})
+                            .padding(10.dp),
+                        isError = isError,
+                        supportingText = { Text(text = "*required") }
+                    )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    OutlinedTextField(value = userBodyweight?:"", onValueChange = {
-                        newValue->viewModel.enterBodyWeight(newValue)
+                    OutlinedTextField(value = userBodyweight?:"", onValueChange = { newValue->viewModel.enterBodyWeight(newValue)
                         isError=newValue.isEmpty() },
                         placeholder = { Text(text = "Weight")},
                         leadingIcon = { Icon(imageVector = Icons.Outlined.MonitorWeight, contentDescription = "")},
@@ -562,7 +593,7 @@ fun GetFinalDetails(navController: NavController, viewModel: UserInfoViewModel= 
                                     }
                                 }
                             }
-                            , supportingText = { Text(text = "Your Age: ${userAge}")},
+                            , supportingText = { Text(text = "Your Age: ${userAge?:""}")},
                             isError = isError
                     )
 
@@ -574,8 +605,7 @@ fun GetFinalDetails(navController: NavController, viewModel: UserInfoViewModel= 
                                 val selectedDateMillis=dateState.selectedDateMillis
                                 if(selectedDateMillis!=null){
                                     viewModel.enterDob(formatDate(selectedDateMillis))
-                                    userAge=calculateAge(selectedDateMillis)
-                                    userAgeString="Age: ${userAge} years"
+                                    viewModel.calculateAndSetAge(selectedDateMillis)
                                     isError=viewModel.userDateOfBirth.value.isNullOrEmpty()||userAge==0
                                 }
                                 }) {
