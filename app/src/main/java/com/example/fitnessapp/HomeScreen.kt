@@ -53,8 +53,8 @@ import kotlinx.coroutines.delay
 
 @Composable
 
-fun Home_Screen(navController: NavController, viewModel: HomeScreenViewModel= androidx.lifecycle.viewmodel.compose.viewModel()) {
-    val selectedWorkout by viewModel.selectedWorkout.collectAsState()
+fun Home_Screen(navController: NavController, homeScreenViewModel: HomeScreenViewModel) {
+    val selectedWorkout by homeScreenViewModel.selectedWorkout.collectAsState()
 
     MaterialTheme {
         Surface(
@@ -91,7 +91,7 @@ fun Home_Screen(navController: NavController, viewModel: HomeScreenViewModel= an
                             .size(250.dp)
                             .clickable {
                                 navController.navigate(Routes.get_gender_info)
-                                viewModel.selectWorkout("Gym Workout")
+                                homeScreenViewModel.selectWorkout("Gym Workout")
                             }
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -122,7 +122,7 @@ fun Home_Screen(navController: NavController, viewModel: HomeScreenViewModel= an
                             .size(250.dp)
                             .clickable {
                                 navController.navigate(Routes.get_gender_info)
-                                viewModel.selectWorkout("Home Workout")
+                                homeScreenViewModel.selectWorkout("Home Workout")
                             }
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {

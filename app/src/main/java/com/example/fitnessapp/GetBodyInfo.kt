@@ -99,8 +99,8 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GetGenderInfo(navController: NavController, viewModel: UserInfoViewModel= androidx.lifecycle.viewmodel.compose.viewModel()) {
-    val userGender by viewModel.userGender.collectAsState()
+fun GetGenderInfo(navController: NavController, userInfoViewModel: UserInfoViewModel) {
+    val userGender by userInfoViewModel.userGender.collectAsState()
 
     Scaffold(topBar = {
         TopAppBar(
@@ -150,10 +150,10 @@ fun GetGenderInfo(navController: NavController, viewModel: UserInfoViewModel= an
                         )
                     )
 
-                    // Cards
+
                     Spacer(modifier = Modifier.height(16.dp))
                     ElevatedCard(
-                        onClick = { viewModel.selectGender("Male")
+                        onClick = { userInfoViewModel.selectGender("Male")
                                   navController.navigate(Routes.get_goal_info)
                                   Log.d("CardClick", userGender?:"No user selected")},
 
@@ -188,7 +188,7 @@ fun GetGenderInfo(navController: NavController, viewModel: UserInfoViewModel= an
 
                     Spacer(modifier = Modifier.height(16.dp))
                     ElevatedCard(
-                        onClick = { viewModel.selectGender("Female")
+                        onClick = { userInfoViewModel.selectGender("Female")
                                   navController.navigate(Routes.get_goal_info)
                                   Log.d("CardClick", userGender?:"No user selected")},
                         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
@@ -227,8 +227,8 @@ fun GetGenderInfo(navController: NavController, viewModel: UserInfoViewModel= an
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GetBodyTypeInfo(navController: NavController, viewModel: UserInfoViewModel= androidx.lifecycle.viewmodel.compose.viewModel()){
-    val userBodyType by viewModel.userBodyType.collectAsState()
+fun GetBodyTypeInfo(navController: NavController, userInfoViewModel: UserInfoViewModel){
+    val userBodyType by userInfoViewModel.userBodyType.collectAsState()
     Scaffold(topBar = {
         TopAppBar(title = { },
             navigationIcon = {
@@ -262,7 +262,7 @@ fun GetBodyTypeInfo(navController: NavController, viewModel: UserInfoViewModel= 
                     )
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    ElevatedCard(onClick = { viewModel.selectBodyType("Ectomorph")
+                    ElevatedCard(onClick = { userInfoViewModel.selectBodyType("Ectomorph")
                                             navController.navigate(Routes.get_final_details)},
 
                         modifier = Modifier
@@ -291,7 +291,7 @@ fun GetBodyTypeInfo(navController: NavController, viewModel: UserInfoViewModel= 
 
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    ElevatedCard(onClick = { viewModel.selectBodyType("Mesomorph")
+                    ElevatedCard(onClick = { userInfoViewModel.selectBodyType("Mesomorph")
                                            navController.navigate(Routes.get_final_details)},
 
                         modifier = Modifier
@@ -319,7 +319,7 @@ fun GetBodyTypeInfo(navController: NavController, viewModel: UserInfoViewModel= 
                         }
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    ElevatedCard(onClick = { viewModel.selectBodyType("Endomorph")
+                    ElevatedCard(onClick = { userInfoViewModel.selectBodyType("Endomorph")
                                             navController.navigate(Routes.get_final_details)},
 
                         modifier = Modifier
@@ -356,8 +356,8 @@ fun GetBodyTypeInfo(navController: NavController, viewModel: UserInfoViewModel= 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GetGoalInfo(navController: NavController, viewModel: UserInfoViewModel= androidx.lifecycle.viewmodel.compose.viewModel()){
-    val userGoal by viewModel.userGoal.collectAsState()
+fun GetGoalInfo(navController: NavController, userInfoViewModel: UserInfoViewModel){
+    val userGoal by userInfoViewModel.userGoal.collectAsState()
     Scaffold(topBar = {
         TopAppBar(title = { },
             navigationIcon = {
@@ -393,7 +393,7 @@ fun GetGoalInfo(navController: NavController, viewModel: UserInfoViewModel= andr
                     Spacer(modifier = Modifier.height(16.dp))
 
                     ElevatedCard(onClick = { navController.navigate(Routes.get_body_type_info)
-                                           viewModel.selectGoal("Bulk")},
+                                           userInfoViewModel.selectGoal("Bulk")},
                         modifier = Modifier
                             .height(150.dp)
                             .fillMaxWidth()
@@ -420,7 +420,7 @@ fun GetGoalInfo(navController: NavController, viewModel: UserInfoViewModel= andr
                         
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    ElevatedCard(onClick = { viewModel.selectGoal("Cut")
+                    ElevatedCard(onClick = { userInfoViewModel.selectGoal("Cut")
                                            navController.navigate(Routes.get_body_type_info)
                                            },
                         modifier = Modifier
@@ -449,7 +449,7 @@ fun GetGoalInfo(navController: NavController, viewModel: UserInfoViewModel= andr
                         }
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    ElevatedCard(onClick = { viewModel.selectGoal("Maintain")
+                    ElevatedCard(onClick = { userInfoViewModel.selectGoal("Maintain")
                                            navController.navigate(Routes.get_body_type_info)},
                         modifier = Modifier
                             .height(150.dp)
@@ -483,15 +483,15 @@ fun GetGoalInfo(navController: NavController, viewModel: UserInfoViewModel= andr
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GetFinalDetails(navController: NavController, viewModel: UserInfoViewModel= androidx.lifecycle.viewmodel.compose.viewModel()){
-    val userName by viewModel.userName.collectAsState()
-    val userDateOfBirth by viewModel.userDateOfBirth.collectAsState()
-    val userAge by viewModel.userAge.collectAsState()
+fun GetFinalDetails(navController: NavController, userInfoViewModel: UserInfoViewModel){
+    val userName by userInfoViewModel.userName.collectAsState()
+    val userDateOfBirth by userInfoViewModel.userDateOfBirth.collectAsState()
+    val userAge by userInfoViewModel.userAge.collectAsState()
     var showDatePicker by remember { mutableStateOf(false) }
     val dateState = rememberDatePickerState()
-    val userBodyweight by viewModel.userBodyWeight.collectAsState()
+    val userBodyweight by userInfoViewModel.userBodyWeight.collectAsState()
     var isError by remember{ mutableStateOf(false) }
-    val userActvityrate by viewModel.userActivityRate.collectAsState()
+    val userActvityrate by userInfoViewModel.userActivityRate.collectAsState()
     var expanded by remember { mutableStateOf(false) }
 
     fun formatDate(dateinmillis:Long): String {
@@ -508,7 +508,7 @@ fun GetFinalDetails(navController: NavController, viewModel: UserInfoViewModel= 
                 tint=MaterialTheme.colorScheme.onBackground)
         }})},
         floatingActionButton = { FloatingActionButton(onClick = {
-            if(userBodyweight.isNullOrEmpty()||viewModel.userName.value.isNullOrEmpty()){
+            if(userBodyweight.isNullOrEmpty()||userInfoViewModel.userName.value.isNullOrEmpty()){
                 isError=true
             }
             else{
@@ -542,7 +542,7 @@ fun GetFinalDetails(navController: NavController, viewModel: UserInfoViewModel= 
                     OutlinedTextField(
                         value = userName?:"",  // ✅ Uses collected state
                         onValueChange = { newValue ->
-                            viewModel.enterUserName(newValue)  // ✅ Updates ViewModel correctly
+                            userInfoViewModel.enterUserName(newValue)  // ✅ Updates ViewModel correctly
                         },
                         placeholder = { Text(text = "Name") },
                         leadingIcon = { Icon(imageVector = Icons.Outlined.Person, contentDescription = "") },
@@ -554,9 +554,9 @@ fun GetFinalDetails(navController: NavController, viewModel: UserInfoViewModel= 
                         supportingText = { Text(text = "*required") }
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
 
-                    OutlinedTextField(value = userBodyweight?:"", onValueChange = { newValue->viewModel.enterBodyWeight(newValue)
+                    OutlinedTextField(value = userBodyweight?:"", onValueChange = {
+                        newValue->userInfoViewModel.enterBodyWeight(newValue)
                         isError=newValue.isEmpty() },
                         placeholder = { Text(text = "Weight")},
                         leadingIcon = { Icon(imageVector = Icons.Outlined.MonitorWeight, contentDescription = "")},
@@ -568,12 +568,11 @@ fun GetFinalDetails(navController: NavController, viewModel: UserInfoViewModel= 
                         isError = isError,
                         supportingText = { Text(text = "*required")}
                         )
-                    Spacer(modifier = Modifier.height(16.dp))
 
 
                     OutlinedTextField(
                         value = userDateOfBirth?:"",
-                        onValueChange = { newValue-> viewModel.enterDob(newValue)
+                        onValueChange = { newValue-> userInfoViewModel.enterDob(newValue)
                                         isError=newValue.isEmpty()},
                         placeholder = { Text(text = "Date Of Birth") },
                         leadingIcon = {
@@ -604,9 +603,9 @@ fun GetFinalDetails(navController: NavController, viewModel: UserInfoViewModel= 
                                 TextButton(onClick = { showDatePicker = false
                                 val selectedDateMillis=dateState.selectedDateMillis
                                 if(selectedDateMillis!=null){
-                                    viewModel.enterDob(formatDate(selectedDateMillis))
-                                    viewModel.calculateAndSetAge(selectedDateMillis)
-                                    isError=viewModel.userDateOfBirth.value.isNullOrEmpty()||userAge==0
+                                    userInfoViewModel.enterDob(formatDate(selectedDateMillis))
+                                    userInfoViewModel.calculateAndSetAge(selectedDateMillis)
+                                    isError=userInfoViewModel.userDateOfBirth.value.isNullOrEmpty()||userAge==0
                                 }
                                 }) {
                                     Text(text = "Ok")
@@ -618,7 +617,7 @@ fun GetFinalDetails(navController: NavController, viewModel: UserInfoViewModel= 
                     }
                     OutlinedTextField(
                         value = userActvityrate?:"",
-                        onValueChange = { newValue->  viewModel.enterActivityRate(newValue)
+                        onValueChange = { newValue->  userInfoViewModel.enterActivityRate(newValue)
                                         isError=newValue.isEmpty()},
                         placeholder = { Text(text = "How often do you perform physical activity?") },
                         leadingIcon = {
@@ -645,10 +644,10 @@ fun GetFinalDetails(navController: NavController, viewModel: UserInfoViewModel= 
 
                     DropdownMenu(expanded = expanded, onDismissRequest = { expanded=false }, offset = DpOffset(x=230.dp,y=0.dp)) {
                         DropdownMenuItem(text = { Text(text = "Very Often") }, onClick = { expanded=false 
-                                                                                            viewModel.enterActivityRate("Very Often") })
-                        DropdownMenuItem(text = { Text(text = "Sometimes") }, onClick = { viewModel.enterActivityRate("Sometimes")
+                                                                                            userInfoViewModel.enterActivityRate("Very Often") })
+                        DropdownMenuItem(text = { Text(text = "Sometimes") }, onClick = { userInfoViewModel.enterActivityRate("Sometimes")
                                                                                             expanded=false})
-                        DropdownMenuItem(text = { Text(text = "Never") }, onClick = { viewModel.enterActivityRate("Never")
+                        DropdownMenuItem(text = { Text(text = "Never") }, onClick = { userInfoViewModel.enterActivityRate("Never")
                                                                                             expanded=false})
                     }
 
@@ -663,6 +662,7 @@ fun GetFinalDetails(navController: NavController, viewModel: UserInfoViewModel= 
 @Composable
 fun GetGenderInfoPreview() {
     val mock = TestNavHostController(LocalContext.current)
-    GetGoalInfo(navController = mock)
+    val mockmodel=UserInfoViewModel()
+    GetGoalInfo(navController = mock, userInfoViewModel = mockmodel)
 }
 

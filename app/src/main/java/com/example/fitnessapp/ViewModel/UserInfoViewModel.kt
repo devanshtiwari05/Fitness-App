@@ -53,8 +53,10 @@ class UserInfoViewModel : ViewModel(){
         if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
             age--
         }
-
-        _userAge.value = age
+        if (age>=0)
+            _userAge.value = age
+        else
+            _userAge.value=0
     }
 
 
