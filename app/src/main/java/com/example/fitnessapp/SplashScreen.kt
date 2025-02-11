@@ -13,6 +13,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,14 +24,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.fitnessapp.Navigation.Routes
+import com.example.fitnessapp.ViewModel.AuthState
+import com.example.fitnessapp.ViewModel.AuthViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(navController: NavController){
+fun SplashScreen(navController: NavController,authViewModel: AuthViewModel){
+    val authState by authViewModel.authState.collectAsState()
     LaunchedEffect(Unit){
-        delay(3000)
-        navController.navigate(Routes.login_page){
-            popUpTo(Routes.splash_screen){inclusive=true}
+        when(authState){
+            is AuthState.Authenticated -> navController.navigate((Routes.home_screen))
+            is AuthState.UnAuthenticated -> navController.navigate((Routes.login_page))
+            else -> Unit
         }
     }
     Box(modifier = Modifier

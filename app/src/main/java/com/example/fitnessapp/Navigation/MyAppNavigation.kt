@@ -27,16 +27,16 @@ fun MyAppNavigation(modifier: Modifier){
     val navController= rememberNavController()
     NavHost(navController = navController, startDestination = Routes.splash_screen, builder = {
         composable(Routes.splash_screen){
-            SplashScreen(navController)
+            SplashScreen(navController,authViewModel)
         }
         composable(Routes.login_page) {
-            LoginPage(navController,authViewModel)
+            LoginPage(navController,authViewModel,userInfoViewModel)
         }
         composable(Routes.signUp_page) {
-            SignUpPage(navController,authViewModel)
+            SignUpPage(navController,authViewModel,userInfoViewModel)
         }
         composable(Routes.home_screen) {
-            Home_Screen(navController,homeScreenViewModel)
+            Home_Screen(navController,homeScreenViewModel,authViewModel)
         }
         composable(Routes.get_gender_info) {
             GetGenderInfo(navController,userInfoViewModel)

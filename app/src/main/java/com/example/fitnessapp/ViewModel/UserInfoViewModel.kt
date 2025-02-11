@@ -7,6 +7,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import java.util.Calendar
 
 class UserInfoViewModel : ViewModel(){
+    private val _userEmail=MutableStateFlow<String?>(null)
+    val userEmail: StateFlow<String?> = _userEmail.asStateFlow()
+    private val _userPassword=MutableStateFlow<String?>(null)
+    val userPassword: StateFlow<String?> = _userPassword.asStateFlow()
     private val _userGender=MutableStateFlow<String?>(null)
     val userGender:StateFlow<String?> = _userGender.asStateFlow()
     private val _userBodyType= MutableStateFlow<String?>(null)
@@ -23,6 +27,13 @@ class UserInfoViewModel : ViewModel(){
     val userBodyWeight: StateFlow<String?> = _userBodyWeight.asStateFlow()
     private val _userAge= MutableStateFlow<Int?>(null)
     val userAge: StateFlow<Int?> = _userAge.asStateFlow()
+
+    fun enterEmail(email:String){
+        _userEmail.value=email
+    }
+    fun enterPassword(password:String){
+        _userPassword.value=password
+    }
     fun selectGender(gender:String){
         _userGender.value=gender
     }
@@ -57,6 +68,10 @@ class UserInfoViewModel : ViewModel(){
             _userAge.value = age
         else
             _userAge.value=0
+    }
+    fun clearFields() {
+        _userEmail.value = ""
+        _userPassword.value = ""
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.fitnessapp
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,6 +37,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -48,13 +50,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.fitnessapp.Navigation.Routes
+import com.example.fitnessapp.ViewModel.AuthState
+import com.example.fitnessapp.ViewModel.AuthViewModel
 import com.example.fitnessapp.ViewModel.HomeScreenViewModel
 import kotlinx.coroutines.delay
 
 @Composable
 
-fun Home_Screen(navController: NavController, homeScreenViewModel: HomeScreenViewModel) {
+fun Home_Screen(navController: NavController, homeScreenViewModel: HomeScreenViewModel,authViewModel: AuthViewModel) {
     val selectedWorkout by homeScreenViewModel.selectedWorkout.collectAsState()
+    val authState by authViewModel.authState.collectAsState()
+
+    LaunchedEffect(authState) {
+        when(authState){
+            is AuthState.UnAuthenticated-> navController.navigate(Routes.login_page)
+            else -> Unit
+        }
+    }
 
     MaterialTheme {
         Surface(
@@ -140,6 +152,12 @@ fun Home_Screen(navController: NavController, homeScreenViewModel: HomeScreenVie
                         }
 
                     }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(onClick = {
+                    authViewModel.signOut()
+                }) {
+                    Text("Sign Out")
                 }
             }
         }
