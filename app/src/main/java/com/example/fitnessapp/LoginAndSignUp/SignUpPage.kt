@@ -54,7 +54,9 @@ fun SignUpPage(navController: NavController, authviewModel: AuthViewModel,userIn
 
     LaunchedEffect(authState) {
         when(authState){
-            is AuthState.Authenticated -> navController.navigate(Routes.home_screen)
+            is AuthState.Authenticated -> navController.navigate(Routes.home_screen){
+                popUpTo(Routes.signUp_page) {inclusive=true }
+            }
             is AuthState.Error ->
                 Toast.makeText(context, (authState as AuthState.Error).message,Toast.LENGTH_SHORT).show()
             else -> Unit

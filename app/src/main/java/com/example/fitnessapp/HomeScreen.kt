@@ -63,7 +63,9 @@ fun Home_Screen(navController: NavController, homeScreenViewModel: HomeScreenVie
 
     LaunchedEffect(authState) {
         when(authState){
-            is AuthState.UnAuthenticated-> navController.navigate(Routes.login_page)
+            is AuthState.UnAuthenticated-> navController.navigate(Routes.login_page){
+                popUpTo(Routes.home_screen){inclusive=true}
+            }
             else -> Unit
         }
     }

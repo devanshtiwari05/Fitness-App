@@ -33,8 +33,12 @@ fun SplashScreen(navController: NavController,authViewModel: AuthViewModel){
     val authState by authViewModel.authState.collectAsState()
     LaunchedEffect(Unit){
         when(authState){
-            is AuthState.Authenticated -> navController.navigate((Routes.home_screen))
-            is AuthState.UnAuthenticated -> navController.navigate((Routes.login_page))
+            is AuthState.Authenticated -> navController.navigate(Routes.home_screen){
+                popUpTo(Routes.splash_screen){inclusive=true}
+            }
+            is AuthState.UnAuthenticated -> navController.navigate(Routes.login_page){
+                popUpTo(Routes.splash_screen) {inclusive=true}
+            }
             else -> Unit
         }
     }
