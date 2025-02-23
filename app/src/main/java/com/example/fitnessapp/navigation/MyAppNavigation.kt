@@ -1,8 +1,8 @@
-package com.example.fitnessapp.Navigation
+package com.example.fitnessapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -11,19 +11,19 @@ import com.example.fitnessapp.GetFinalDetails
 import com.example.fitnessapp.GetGenderInfo
 import com.example.fitnessapp.GetGoalInfo
 import com.example.fitnessapp.Home_Screen
-import com.example.fitnessapp.LoginAndSignUp.LoginPage
-import com.example.fitnessapp.LoginAndSignUp.SignUpPage
+import com.example.fitnessapp.loginAndSignUp.LoginPage
+import com.example.fitnessapp.loginAndSignUp.SignUpPage
 import com.example.fitnessapp.Response.GetResponse
 import com.example.fitnessapp.SplashScreen
-import com.example.fitnessapp.ViewModel.AuthViewModel
-import com.example.fitnessapp.ViewModel.HomeScreenViewModel
-import com.example.fitnessapp.ViewModel.UserInfoViewModel
+import com.example.fitnessapp.viewModel.AuthViewModel
+import com.example.fitnessapp.viewModel.HomeScreenViewModel
+import com.example.fitnessapp.viewModel.UserInfoViewModel
 
 @Composable
 fun MyAppNavigation(modifier: Modifier){
-    val userInfoViewModel:UserInfoViewModel= viewModel()
-    val homeScreenViewModel:HomeScreenViewModel= viewModel()
-    val authViewModel:AuthViewModel= viewModel()
+    val userInfoViewModel:UserInfoViewModel= hiltViewModel()
+    val homeScreenViewModel:HomeScreenViewModel= hiltViewModel()
+    val authViewModel:AuthViewModel= hiltViewModel()
     val navController= rememberNavController()
     NavHost(navController = navController, startDestination = Routes.splash_screen, builder = {
         composable(Routes.splash_screen){

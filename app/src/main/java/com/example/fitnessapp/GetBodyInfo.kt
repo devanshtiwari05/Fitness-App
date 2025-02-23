@@ -3,8 +3,6 @@ package com.example.fitnessapp
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
@@ -13,30 +11,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.MonitorWeight
-import androidx.compose.material.icons.filled.NavigateNext
 import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.MonitorWeight
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.RunCircle
-import androidx.compose.material3.Button
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenu
@@ -49,15 +37,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -65,15 +50,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -82,17 +62,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.testing.TestNavHostController
-import com.example.fitnessapp.Navigation.Routes
-import com.example.fitnessapp.ViewModel.UserInfoViewModel
+import com.example.fitnessapp.navigation.Routes
+import com.example.fitnessapp.viewModel.UserInfoViewModel
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -490,6 +466,9 @@ fun GetFinalDetails(navController: NavController, userInfoViewModel: UserInfoVie
     var showDatePicker by remember { mutableStateOf(false) }
     val dateState = rememberDatePickerState()
     val userBodyweight by userInfoViewModel.userBodyWeight.collectAsState()
+    val userGender by userInfoViewModel.userGender.collectAsState()
+    val userGoal by userInfoViewModel.userGoal.collectAsState()
+    val userBodyType by userInfoViewModel.userBodyType.collectAsState()
     var isError by remember{ mutableStateOf(false) }
     val userActvityrate by userInfoViewModel.userActivityRate.collectAsState()
     var expanded by remember { mutableStateOf(false) }
@@ -512,6 +491,7 @@ fun GetFinalDetails(navController: NavController, userInfoViewModel: UserInfoVie
                 isError=true
             }
             else{
+                userInfoViewModel.saveUserData(userName,userAge,userGoal,userBodyType,userGender,userBodyweight,userActvityrate)
                 navController.navigate(Routes.get_response)
             }
         }) {
@@ -540,9 +520,9 @@ fun GetFinalDetails(navController: NavController, userInfoViewModel: UserInfoVie
                     Spacer(modifier = Modifier.height(32.dp))
 
                     OutlinedTextField(
-                        value = userName?:"",  // ✅ Uses collected state
+                        value = userName?:"",
                         onValueChange = { newValue ->
-                            userInfoViewModel.enterUserName(newValue)  // ✅ Updates ViewModel correctly
+                            userInfoViewModel.enterUserName(newValue)
                         },
                         placeholder = { Text(text = "Name") },
                         leadingIcon = { Icon(imageVector = Icons.Outlined.Person, contentDescription = "") },
@@ -642,7 +622,7 @@ fun GetFinalDetails(navController: NavController, userInfoViewModel: UserInfoVie
                         isError = isError
                     )
 
-                    DropdownMenu(expanded = expanded, onDismissRequest = { expanded=false }, offset = DpOffset(x=230.dp,y=0.dp)) {
+                    DropdownMenu(expanded = expanded, onDismissRequest = { expanded=false }, offset = DpOffset(x=220.dp,y=-50.dp)) {
                         DropdownMenuItem(text = { Text(text = "Very Often") }, onClick = { expanded=false 
                                                                                             userInfoViewModel.enterActivityRate("Very Often") })
                         DropdownMenuItem(text = { Text(text = "Sometimes") }, onClick = { userInfoViewModel.enterActivityRate("Sometimes")
@@ -658,11 +638,12 @@ fun GetFinalDetails(navController: NavController, userInfoViewModel: UserInfoVie
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GetGenderInfoPreview() {
-    val mock = TestNavHostController(LocalContext.current)
-    val mockmodel=UserInfoViewModel()
-    GetGoalInfo(navController = mock, userInfoViewModel = mockmodel)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun GetGenderInfoPreview() {
+//    val mock = TestNavHostController(LocalContext.current)
+//    val mock2 = AuthViewModel()
+//    val mockmodel=UserInfoViewModel()
+//    GetGoalInfo(navController = mock, userInfoViewModel = mockmodel)
+//}
 

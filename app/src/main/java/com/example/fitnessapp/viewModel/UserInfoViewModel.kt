@@ -1,12 +1,22 @@
-package com.example.fitnessapp.ViewModel
+package com.example.fitnessapp.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.util.Calendar
+import javax.inject.Inject
 
-class UserInfoViewModel : ViewModel(){
+@HiltViewModel
+class UserInfoViewModel @Inject constructor(
+    private val auth:FirebaseAuth,
+    private val db:FirebaseFirestore
+) : ViewModel(){
+
     private val _userEmail=MutableStateFlow<String?>(null)
     val userEmail: StateFlow<String?> = _userEmail.asStateFlow()
     private val _userPassword=MutableStateFlow<String?>(null)
@@ -74,6 +84,27 @@ class UserInfoViewModel : ViewModel(){
         _userPassword.value = ""
     }
 
+
+    fun saveUserData(name:String?,age:Int?,goal:String?,bodyType:String?,gender:String?,weight:String?,activityRate:String?){
+        val userId = auth.currentUser?.uid ?: return
+        val userData= hashMapOf(
+            "name" to name,
+            "age" to age,
+            "gender" to gender,
+            "weight" to weight,
+            "bodyType" to bodyType,
+            "activityRate" to activityRate,
+            "goal" to goal
+        )
+        db.collection("users").document(userId)
+            .set(userData)
+            .addOnSuccessListener {
+                Log.d("Firestore","User data saved successfully!")
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Error saving data", e)
+            }
+    }
 
 
 }

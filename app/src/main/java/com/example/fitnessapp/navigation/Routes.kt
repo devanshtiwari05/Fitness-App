@@ -1,4 +1,4 @@
-package com.example.fitnessapp.Navigation
+package com.example.fitnessapp.navigation
 
 object Routes {
     var splash_screen="Splash Screen"
