@@ -37,7 +37,6 @@ class UserInfoViewModel @Inject constructor(
     val userBodyWeight: StateFlow<String?> = _userBodyWeight.asStateFlow()
     private val _userAge= MutableStateFlow<Int?>(null)
     val userAge: StateFlow<Int?> = _userAge.asStateFlow()
-
     fun enterEmail(email:String){
         _userEmail.value=email
     }
